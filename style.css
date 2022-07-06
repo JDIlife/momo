@@ -1,0 +1,99 @@
+* {
+	box-sizing: border-box;
+}
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	background-color: #b3dfea;
+}
+
+.logo {
+	margin-top: 5px;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 25px;
+	font-weight: 800;
+}
+
+.menuItems {
+	display: flex;
+	width: 100%;
+}
+
+.menuItems div {
+	margin: 0px 30px 0px 30px;
+}
+
+.buttons1 {
+	width: 20%;
+}
+
+.buttons2 {
+	width: 20%;
+}
+.buttons3 {
+	width: 60%;
+}
+
+.buttons4 {
+	display: flex;
+	/* display: flex 만 썼는데 검색버튼이 수직으로 가운데에 오게되었다 */
+}
+
+.menuItems ul {
+	display: flex;
+	justify-content: space-around;
+	padding: 0;
+}
+
+.menuItems ul li {
+	list-style: none;
+}
+
+.menuItems ul button {
+	margin: 0px 10px 0px 10px;
+	padding: 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 30px;
+}
+
+#searchButton {
+	margin: 0px 10px 0px 10px;
+	padding: 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 30px;
+}
+
+main{
+	display: flex;
+	height: 85vh;
+}
+
+
+.folderArea{
+	margin: 30px;
+	background-color:#D1F4FA;
+	width: 20%;
+}
+
+.listArea{
+	margin: 30px;
+	background-color:#D1F4FA;
+	width: 20%;
+}
+
+.textArea{
+	margin: 30px;
+	background-color:#D1F4FA;
+	width: 60%;
+}
+
+footer{
+	text-align: center;
+}
