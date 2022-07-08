@@ -10,7 +10,12 @@ const searchButton = document.getElementById("searchButton");
 
 const folderArea = document.getElementsByClassName("folderArea");
 const listArea = document.getElementsByClassName("listArea");
-const textinput = document.getElementsByClassName("textinput");
+const textArea = document.getElementsByClassName("textArea");
 
 newFolderButton.addEventListener("click", () => {alert("New Folder")});
+
+editNoteButton.addEventListener('click', () => { 
+	document.getElementById('textInput').focus();
+});
+
 
