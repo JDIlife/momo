@@ -1,12 +1,18 @@
 * {
 	box-sizing: border-box;
 }
+
+:root {
+	--main-bg-color: #b3dfea;
+	--main-area-color: #d1f4fa;
+}
+
 html, body {
 	height: 100%;
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	background-color: #b3dfea;
+	background-color: var(--main-bg-color);
 }
 
 .logo {
@@ -73,7 +79,7 @@ main {
 
 .folderArea {
 	margin: 30px;
-	background-color:#D1F4FA;
+	background-color:var(--main-area-color);
 	width: 20%;
 	border-radius: 15px;
 	overflow-y: hidden;
@@ -82,7 +88,7 @@ main {
 
 .listArea {
 	margin: 30px;
-	background-color:#D1F4FA;
+	background-color:var(--main-area-color);
 	width: 20%;
 	border-radius: 15px;
 	overflow-y: scroll;
@@ -90,14 +96,40 @@ main {
 
 .listArea::-webkit-scrollbar {
 	background-color: #7a99c4;
+	width: 15px;
 }
+
+.listArea::-webkit-scrollbar-thumb {
+	background-color: var(--main-area-color);
+	height: 20px;
+	width: 10px;
+}
+/* 왜 scrollbar-thumb이 적용이 안되는지 모르겠다 */
+
+.autoDateTime {
+	text-align: center;
+	font-size: 16px;
+}
+
 
 .textArea {
 	margin: 30px;
-	background-color:#D1F4FA;
+	background-color:var(--main-area-color);
 	width: 60%;
 	border-radius: 15px;
 	overflow-y: hidden;
+}
+
+#textInput {
+	height: 100%;
+	width: 100%;
+	font-size: 20px;
+	background-color: var(--main-area-color);
+	border: none;
+}
+
+#textInput:focus {
+	outline: none;
 }
 
 

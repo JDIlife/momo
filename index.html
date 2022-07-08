@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script defer src="main.js"></script>
 	<link rel="stylesheet" href="style.css">
-	<script src="main.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<title>momo</title>
 </head>
 <body>
@@ -16,23 +17,23 @@
 			<div class="menuItems">
 				<div class="buttons1">
 					<ul>
-						<li><button><i class="fa-solid fa-circle-plus"></i></button></li>
-						<li><button><i class="fa-solid fa-gear"></i></button></li>
+						<li><button id="newFolderButton"><i class="fa-solid fa-circle-plus"></i></button></li>
+						<li><button id="settingButton"><i class="fa-solid fa-gear"></i></button></li>
 					</ul>
 				</div>
 				<div class="buttons2">
 					<ul>
-						<li><button><i class="fa-regular fa-circle-check"></i></button></li>
-						<li><button><i class="fa-solid fa-trash-can"></i></button></li>
+						<li><button id="selectButton"><i class="fa-regular fa-circle-check"></i></button></li>
+						<li><button id="trashBinButton"><i class="fa-solid fa-trash-can"></i></button></li>
 					</ul>
 				</div>
 				<div class="buttons3">
 					<ul>
-						<li><button><i class="fa-solid fa-pen-to-square"></i></button></li>
-						<li><button><i class="fa-solid fa-font"></i></button></li>
-						<li><button><i class="fa-solid fa-image"></i></button></li>
-						<li><button><i class="fa-solid fa-arrow-up-from-bracket"></i></button></li>
-						<li><button><i class="fa-solid fa-magnifying-glass"></i></button></li>
+						<li><button id="editNoteButton"><i class="fa-solid fa-pen-to-square"></i></button></li>
+						<li><button id="fontSettingButton"><i class="fa-solid fa-font"></i></button></li>
+						<li><button id="imageButton"><i class="fa-solid fa-image"></i></button></li>
+						<li><button id="shareButton"><i class="fa-solid fa-arrow-up-from-bracket"></i></button></li>
+						<li><button id="searchButton"><i class="fa-solid fa-magnifying-glass"></i></button></li>
 					</ul>
 				</div>
 			</div>
@@ -47,11 +48,12 @@
 		</div>
 		<div class="textArea">
 			<div class="autoDateTime">auto_date_time</div>
-			<div class="textInput">textInput</div>
+			<textarea name="textinput" id="textInput" cols="30" rows="10"></textarea>
 		</div>
 	</main>
 	<footer>
 		<div class="madeBy">made by BARO</div>
 	</footer>
+
 	</body>
 </html>
