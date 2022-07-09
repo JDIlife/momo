@@ -41,7 +41,7 @@
 				<div class="settingContent">
 					<ul>
 						<li>
-							Dark Theme<button id="darkThemeButton"><i class="fa-solid fa-toggle-off"></i></button>
+							Dark Theme<button><i class="fa-solid fa-toggle-off"></i></button>
 						</li>
 					</ul>
 				</div>
@@ -54,17 +54,17 @@
 					</ul>
 					<ul id="textStyle">
 						<li><button>Title</button></li>
-						<li><button>Heading</button></li>
-						<li><button>Body</button></li>
-						<li><button>*Bulleted List</button></li>
-						<li><button>1. Numbered List</button></li>
+						<li>Heading</li>
+						<li>Body</li>
+						<li>*Bulleted List</li>
+						<li>1. Numbered List</li>
 					</ul>
 				</div>
 				<div class="shareContent">
 					<ul>
-						<li><button>Line<i class="fa-brands fa-line"></i></button></li>
-						<li><button>Instagram<i class="fa-brands fa-instagram"></i></button></li>
-						<li><button>Facebook<i class="fa-brands fa-facebook"></i></button></li>
+						<li>Line<i class="fa-brands fa-line"></i></li>
+						<li>Instagram<i class="fa-brands fa-instagram"></i></li>
+						<li>Facebook<i class="fa-brands fa-facebook"></i></li>
 					</ul>
 				</div>
 			</section>

@@ -5,6 +5,17 @@
 :root {
 	--main-bg-color: #b3dfea;
 	--main-area-color: #d1f4fa;
+	--main-menuContent-color: #a4abdb;
+	--main-menuButton-color: #000000;
+	--main-text-color: #000000;
+}
+
+[data-theme="dark"] {
+	--main-bg-color: #030305;
+	--main-area-color: #2D272D;
+	--main-menuContent-color: #696a70;
+	--main-menuButton-color: #6A84A1;
+	--main-text-color: #ffffff;
 }
 
 html, body {
@@ -21,6 +32,22 @@ html, body {
 	font-family: sans-serif;
 	font-size: 25px;
 	font-weight: 800;
+	color: var(--main-text-color);
+}
+
+button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--main-menuButton-color);
+}
+
+ul {
+	padding: 0;
+}
+
+ul li {
+	list-style: none;
 }
 
 .menuItems {
@@ -49,16 +76,9 @@ html, body {
 	padding: 0;
 }
 
-.menuItems ul li {
-	list-style: none;
-}
-
 .menuItems ul button {
 	margin: 0px 10px 0px 10px;
 	padding: 0;
-	background: none;
-	border: none;
-	cursor: pointer;
 	font-size: 30px;
 }
 
@@ -69,6 +89,72 @@ html, body {
 	border: none;
 	cursor: pointer;
 	font-size: 30px;
+}
+
+.menuContents {
+	display: flex;
+}
+
+.settingContent {
+	width: 150px;
+	height: 180px;
+	border-radius: 15px;
+	background-color: var(--main-menuContent-color);
+	position: absolute;
+	left: 9%;
+	text-align: center;
+	display: none;
+}
+
+.settingContent ul li {
+	margin: 5px;
+}
+
+.settingContent ul li i {
+	font-size: 20px;
+	margin: 5px;
+}
+
+.fontContent {
+	width: 150px;
+	height: 180px;
+	border-radius: 15px;
+	background-color: var(--main-menuContent-color);
+	position: absolute;
+	left: 51%;
+	display: none;
+}
+
+#fontStyle {
+	display: flex;
+	justify-content:space-around;
+}
+
+#textStyle li {
+	margin-left: 10px;
+}
+
+#textStyle li button {
+	font-size: 15px;
+}
+
+.shareContent {
+	width: 150px;
+	height: 180px;
+	border-radius: 15px;
+	background-color: var(--main-menuContent-color);
+	position: absolute;
+	right: 12%;
+	display: none;
+}
+
+.shareContent ul li button {
+	font-size: 20px;
+	margin: 10px;
+}
+
+.shareContent ul li i {
+	margin-left: 10px;
 }
 
 main {
@@ -158,4 +244,5 @@ main {
 
 footer {
 	text-align: center;
+	color: var(--main-text-color);
 }
