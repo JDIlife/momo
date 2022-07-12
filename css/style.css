@@ -229,7 +229,7 @@ main {
 	overflow-y: hidden;
 }
 
-#textInput {
+#textBox {
 	height: 100%;
 	width: 100%;
 	font-size: 20px;
@@ -237,7 +237,7 @@ main {
 	border: none;
 }
 
-#textInput:focus {
+#textBox:focus {
 	outline: none;
 }
 

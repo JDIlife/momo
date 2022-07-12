@@ -19,7 +19,7 @@ newFolderButton.addEventListener("click", () => {alert("New Folder")});
 
 //focus on the text edit erea
 editNoteButton.addEventListener('click', () => { 
-	document.getElementById('textInput').focus();
+	document.getElementById('textBox').focus();
 });
 
 //pop-up menu
