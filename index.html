@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script defer src="/js/main.js"></script>
+	<script defer src="/js/storage.js"></script>
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<title>momo</title>
@@ -72,7 +73,7 @@
 	</nav>
 	<main>
 		<div class="folderArea">
-			<div class="folderItems">
+			<div id="folderItems">
 				<div class="folderItem"><i class="fa-solid fa-folder"></i>foldername 256</div>
 			</div>
 		</div>
@@ -92,9 +93,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="textArea">
-			<div class="autoDateTime">auto_date_time</div>
+		<div id="textArea">
+			<div id="autoDateTime">auto_date_time</div>
 			<div id="textBox" contenteditable="true"></div>
+			<button type="submit" id="submitButton"><i class="fa-solid fa-circle-arrow-right"></i></button>
 		</div>
 	</main>
 	<footer>

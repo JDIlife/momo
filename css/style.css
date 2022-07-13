@@ -171,7 +171,7 @@ main {
 	overflow-y: hidden;
 }
 
-.folderItems div {
+#folderItems div {
 	margin: 15px;
 }
 
@@ -215,18 +215,18 @@ main {
 	padding-right: 10px;
 }
 
-.autoDateTime {
+#autoDateTime {
 	text-align: center;
 	font-size: 16px;
 }
 
 
-.textArea {
+#textArea {
 	margin: 30px;
 	background-color:var(--main-area-color);
 	width: 65%;
 	border-radius: 15px;
-	overflow-y: hidden;
+	overflow-y: scroll;
 }
 
 #textBox {
@@ -239,6 +239,18 @@ main {
 
 #textBox:focus {
 	outline: none;
+}
+
+#submitButton {
+	width: 50px;
+	height: 50px;
+	position: fixed;
+	right: 5%;
+	bottom: 7%;
+}
+
+#submitButton i {
+	font-size: 30px;
 }
 
 
