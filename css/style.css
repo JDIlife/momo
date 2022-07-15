@@ -220,6 +220,17 @@ main {
 	font-size: 16px;
 }
 
+#noteTitle {
+	font-size: 30px;
+	width: 100%;
+	background-color: var(--main-area-color);
+	border-style: none;
+}
+
+#noteTitle:focus {
+	outline: none;
+}
+
 
 #textArea {
 	margin: 30px;
@@ -229,7 +240,7 @@ main {
 	overflow-y: scroll;
 }
 
-#textBox {
+#mainNote {
 	height: 100%;
 	width: 100%;
 	font-size: 20px;
@@ -237,7 +248,7 @@ main {
 	border: none;
 }
 
-#textBox:focus {
+#mainNote:focus {
 	outline: none;
 }
 

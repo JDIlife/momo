@@ -21,11 +21,12 @@ const darkThemeButton = document.getElementById("darkThemeButton");
 const autoDateTime = document.getElementById("autoDateTime");
 
 // CRUD select
-const textBox = document.getElementById('textBox');
+const noteTitle = document.getElementById('noteTitle');
+const mainNote = document.getElementById('mainNote');
 const submitButton = document.getElementById('submitButton');
 
-let contenteditable = document.querySelector('[contenteditable = true]');
-let text = contenteditable.innerText;
+const listItems = document.getElementById('listItems');
+
 
 // form validation
 
@@ -37,7 +38,7 @@ submitButton.addEventListener('click', (e) => {
 });
 
 let formValidation = () => {
-	if (text === ""){
+	if (noteTitle.value === ""){
 		autoDateTime.innerHTML = "post cannot be blank";
 		console.log("failure");
 	} else {
@@ -51,13 +52,53 @@ let formValidation = () => {
 let data = {};
 
 let acceptData = () => {
-	data["text"] = text;
+	data["title"] = noteTitle.value;
+	data["main"] = mainNote.value;
 	console.log(data);
+
+	createNote();
 };
+
+// create note
+
+let createNote = () => {
+	listItems.innerHTML += `
+	<div class="listItem" onclick="editNote(this)">
+		<div class="title">${data.title}</div>
+			<div class="textContents">${data.main}</div>
+			<span class="editDate">2022/07/08</span>
+			<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
+			<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+	</div>
+	`;
+};
+
+// delete note
+
+let deleteNote = (e) => {
+	e.parentElement.remove();
+};
+
+// edit note
+
+let editNote = (e) => {
+	noteTitle.value = e.childNodes[1].innerHTML;
+	mainNote.value = e.childNodes[3].innerHTML;
+	e.remove();
+};
+
+// change focus to mainNote with enter
+
+noteTitle.addEventListener('keydown', ({ key }) => {
+	if (key == 'Enter') {
+		mainNote.focus();
+		};
+	});
+
 
 // focus on the text edit erea
 editNoteButton.addEventListener('click', () => { 
-	document.getElementById('textBox').focus();
+	noteTitle.focus();
 });
 
 // pop-up menu
@@ -110,9 +151,4 @@ newFolderButton.addEventListener('click', () => {
 	div.classList.add("folderItem");
 	document.getElementById('folderItems').appendChild(div);
 });
-
-// select folder
-
-
-//create new note
 

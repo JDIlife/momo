@@ -58,7 +58,7 @@
 						<li><button>Heading</button></li>
 						<li><button>Body</button></li>
 						<li><button>*Bulleted List</button></li>
-						<li><button>1. Numbered List</button></li>
+	<li><button>1. Numbered List</button></li>
 					</ul>
 				</div>
 				<div class="shareContent">
@@ -78,24 +78,13 @@
 			</div>
 		</div>
 		<div class="listArea">
-			<div class="listItems">
-				<div class="listItem">
-					<div class="title">title, title</div>
-					<div class="textContents">test, test</div>
-					<span class="editDate">2022/07/08</span>
-					<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
-				</div>
-				<div class="listItem">
-					<div class="title">title, title</div>
-					<div class="textContents">test, test</div>
-					<span class="editDate">2022/07/08</span>
-					<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
-				</div>
+			<div id="listItems">
 			</div>
 		</div>
 		<div id="textArea">
 			<div id="autoDateTime">auto_date_time</div>
-			<div id="textBox" contenteditable="true"></div>
+			<input type="noteTitle" id="noteTitle" placeholder="note title">
+			<textarea name="" id="mainNote" cols="30" rows="10" placeholder="main note"></textarea>
 			<button type="submit" id="submitButton"><i class="fa-solid fa-circle-arrow-right"></i></button>
 		</div>
 	</main>
