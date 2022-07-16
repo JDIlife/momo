@@ -49,12 +49,18 @@ let formValidation = () => {
 
 // accept data
 
-let data = {};
+let data = [];
 
 let acceptData = () => {
-	data["title"] = noteTitle.value;
-	data["main"] = mainNote.value;
+	data.push({
+		date: autoDateTime.innerHTML,
+		title: noteTitle.value,
+		main: mainNote.value,
+
+	});
 	console.log(data);
+
+	localStorage.setItem("data", JSON.stringify(data));
 
 	createNote();
 };
@@ -62,30 +68,64 @@ let acceptData = () => {
 // create note
 
 let createNote = () => {
-	listItems.innerHTML += `
-	<div class="listItem" onclick="editNote(this)">
-		<div class="title">${data.title}</div>
-			<div class="textContents">${data.main}</div>
-			<span class="editDate">2022/07/08</span>
-			<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
-			<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
-	</div>
-	`;
+	listItems.innerHTML = "";
+	data.map((x, y) => {
+		return (listItems.innerHTML += `
+			<div class="listItem" id=${y}>
+				<div onclick="loadNote(this)">
+					<div class="title">${x.title}</div>
+					<div class="textContents">${x.main}</div>
+					<span class="editDate">${x.date}</span>
+				</div>
+				<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
+				<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+			</div>
+
+			`);
+	});
+
+	resetForm();
 };
+
+// after user input, reset the text field
+
+let resetForm = () => {
+	noteTitle.value = '';
+	mainNote.value = '';
+}
 
 // delete note
 
 let deleteNote = (e) => {
 	e.parentElement.remove();
+
+	data.splice(e.parentElement.id, 1);
+
+	localStorage.setItem("data", JSON.stringify(data));
+
+	resetForm();
+
+	console.log(data);
 };
 
-// edit note
+// load note
 
-let editNote = (e) => {
+let loadNote = (e) => {
 	noteTitle.value = e.childNodes[1].innerHTML;
 	mainNote.value = e.childNodes[3].innerHTML;
-	e.remove();
 };
+
+// restore the note when you refresh the page
+
+(() => {
+	data = JSON.parse(localStorage.getItem("data")) || [];
+	console.log(data);
+	createNote();
+})();
+
+// update note
+
+
 
 // change focus to mainNote with enter
 
@@ -100,6 +140,22 @@ noteTitle.addEventListener('keydown', ({ key }) => {
 editNoteButton.addEventListener('click', () => { 
 	noteTitle.focus();
 });
+
+// auto date and time
+
+let getTime = () => {
+	const date = new Date();
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const days = String(date.getDate()).padStart(2, "0");
+	const hour = String(date.getHours()).padStart(2, "0");
+	const minute = String(date.getMinutes()).padStart(2, "0");
+	const second = String(date.getSeconds()).padStart(2, "0");
+	autoDateTime.innerHTML = `${year}/${month}/${days}/ ${hour}:${minute}:${second}`
+};
+
+getTime();
+setInterval(getTime, 1000);
 
 // pop-up menu
 settingButton.addEventListener('click', () => {
