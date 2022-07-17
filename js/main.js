@@ -43,6 +43,7 @@ let formValidation = () => {
 		console.log("failure");
 	} else {
 		acceptData();
+		updateNote();
 	}
 };
 
@@ -106,13 +107,19 @@ let deleteNote = (e) => {
 	resetForm();
 
 	console.log(data);
+
 };
 
 // load note
 
+const textId = document.getElementsByClassName("textId")[0];
+
+
 let loadNote = (e) => {
 	noteTitle.value = e.childNodes[1].innerHTML;
 	mainNote.value = e.childNodes[3].innerHTML;
+	textId.setAttribute('id', e.parentElement.id);
+	console.log(e.parentElement.id);
 };
 
 // restore the note when you refresh the page
@@ -125,6 +132,27 @@ let loadNote = (e) => {
 
 // update note
 
+const listItem = document.getElementsByClassName('listItem');
+
+let updateNote = () => {
+
+	let listItemId = [];
+
+	for (let i = 1; i <= listItem.length + 1; i += 2) {
+		listItemId.push(listItems.childNodes[i].id);
+	}
+	console.log(listItems);
+	console.log(listItems.childNodes[1].id);
+	console.log(listItem.length);
+	console.log(listItemId);
+
+	if ( listItemId.includes(textId.id) ){
+		console.log('exists');
+	} else {
+		console.log('dont have id');
+	}
+
+};
 
 
 // change focus to mainNote with enter
