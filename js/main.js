@@ -134,9 +134,9 @@ let loadNote = (e) => {
 
 const listItem = document.getElementsByClassName('listItem');
 
+let listItemId = [];
 let updateNote = () => {
 
-	let listItemId = [];
 
 	for (let i = 1; i <= listItem.length + 1; i += 2) {
 		listItemId.push(listItems.childNodes[i].id);
@@ -147,12 +147,25 @@ let updateNote = () => {
 	console.log(listItemId);
 
 	if ( listItemId.includes(textId.id) ){
-		console.log('exists');
+		deleteSameNote();
 	} else {
 		console.log('dont have id');
 	}
 
 };
+
+let deleteSameNote = () => {
+	for (let i = 1; i < listItem.length * 2; i += 2) {
+		if ( textId.id === listItems.childNodes[i].id ) {
+			listItems.removeChild(listItems.childNodes[i]);
+			data.splice(listItems.childNodes[i], 1);
+			localStorage.setItem("data", JSON.stringify(data));
+			listItemId.splice(listItems.childNodes[i].id, 1);
+			textId.setAttribute('id', '');
+		};
+	};
+};
+
 
 
 // change focus to mainNote with enter
