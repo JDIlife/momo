@@ -60,7 +60,7 @@ let acceptData = () => {
 		date: autoDateTime.innerHTML,
 		title: noteTitle.value,
 		main: mainNote.value,
-		index: data.length
+		index: new Date().getTime() + Math.random()
 	});
 	console.log(data);
 
@@ -73,10 +73,10 @@ let acceptData = () => {
 
 let createNote = () => {
 	listItems.innerHTML = "";
-	data.map((x) => {
+	data.map((x, y) => {
 		return (listItems.innerHTML += `
-			<div class="listItem" id=${x.index}>
-				<div onclick="loadNote(this)">
+			<div class="listItem" id=${y}>
+				<div onclick="loadNote(this)" id=${x.index}>
 					<div class="title">${x.title}</div>
 					<div class="textContents">${x.main}</div>
 					<span class="editDate">${x.date}</span>
@@ -102,9 +102,10 @@ let resetForm = () => {
 // delete note
 
 let deleteNote = (e) => {
+	console.log(e.parentElement);
 	e.parentElement.remove();
 
-	data.splice(e.parentElement, 1);
+	data.splice(e.parentElement.id, 1);
 
 	localStorage.setItem("data", JSON.stringify(data));
 
@@ -122,7 +123,7 @@ const textId = document.getElementsByClassName("textId")[0];
 let loadNote = (e) => {
 	noteTitle.value = e.childNodes[1].innerHTML;
 	mainNote.value = e.childNodes[3].innerHTML;
-	textId.setAttribute('id', e.parentElement.id);
+	textId.setAttribute('id', e.id);
 	console.log(e.parentElement.id);
 };
 
