@@ -102,12 +102,14 @@ let resetForm = () => {
 // delete note
 
 let deleteNote = (e) => {
-	console.log(e.parentElement);
+	console.log(e.parentElement.id);
 	e.parentElement.remove();
 
 	data.splice(e.parentElement.id, 1);
 
 	localStorage.setItem("data", JSON.stringify(data));
+
+	createNote();
 
 	resetForm();
 
