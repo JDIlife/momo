@@ -20,13 +20,85 @@ const folder = document.querySelector('.folderItem');
 const darkThemeButton = document.getElementById("darkThemeButton");
 const autoDateTime = document.getElementById("autoDateTime");
 
-// CRUD select
+// folder Items
+const newFolder = document.getElementById("newFolder");
+const folderItems = document.getElementById('folderItems');
+const folderItem = document.getElementsByClassName('folderItem');
+
+// listItems
+const listItems = document.getElementById('listItems');
+
+// Note CRUD select
 const noteTitle = document.getElementById('noteTitle');
 const mainNote = document.getElementById('mainNote');
 const submitButton = document.getElementById('submitButton');
 
-const listItems = document.getElementById('listItems');
 
+// create new folder
+
+newFolderButton.addEventListener('click', () => {
+	newFolder.innerHTML = `
+		<div class="folderItem" onkeydown="inputFolderName()">
+		<i class="fa-solid fa-folder"></i>
+		<input type="text" id="folderName">
+		</div>
+		`;
+	newFolder.onload = () => {
+		let folderName = document.getElementById("folderName");
+	}
+});
+
+// submit folder with Enter key
+
+
+let inputFolderName = () => {
+	if (event.key === 'Enter'){
+		acceptFolder();
+	} else {
+		console.log('failure');
+	}
+}
+
+let folderData = [];
+
+let acceptFolder = () => {
+	folderData.push({
+		folderName: folderName.value,
+		index: new Date().getTime() + Math.random()
+	});
+	console.log("accept folder");
+	console.log(folderData);
+
+	localStorage.setItem("folderData", JSON.stringify(folderData));
+
+	createFolder();
+};
+
+let createFolder = () => {
+	folderItems.innerHTML = "";
+	folderData.map((x, y) => {
+		return (folderItems.innerHTML += `
+			<div class="folderItem" id=${y} onclick="loadFolder(this)">
+				<i class="fa-solid fa-folder"></i>
+				<span class="folderName">${x.folderName}</span>
+				<div class="numberOfNotes"></div>
+			</div>
+			`);
+	});
+};
+
+let loadFolder = () => {
+	createNote();
+	loadNote(listItems);
+}
+
+//restore the folder when you refresh the page
+
+(() => {
+	folderData = JSON.parse(localStorage.getItem("folderData")) || [];
+	createFolder();
+	console.log(folderData);
+})();
 
 // form validation
 
@@ -60,7 +132,8 @@ let acceptData = () => {
 		date: autoDateTime.innerHTML,
 		title: noteTitle.value,
 		main: mainNote.value,
-		index: new Date().getTime() + Math.random()
+		index: new Date().getTime() + Math.random(),
+		folder: "normal"
 	});
 	console.log(data);
 
@@ -84,7 +157,6 @@ let createNote = () => {
 				<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
 				<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
 			</div>
-
 			`);
 	});
 
@@ -226,15 +298,5 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 		document.documentElement.setAttribute("data-theme", switchTheme);
 	}
-});
-
-// create new folder
-
-newFolderButton.addEventListener('click', () => {
-	let div = document.createElement('div');
-
-	div.innerHTML = document.querySelector('.folderItem').innerHTML;
-	div.classList.add("folderItem");
-	document.getElementById('folderItems').appendChild(div);
 });
 

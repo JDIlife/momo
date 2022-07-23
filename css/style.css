@@ -11,11 +11,11 @@
 }
 
 [data-theme="dark"] {
-	--main-bg-color: #030305;
+	--main-bg-color: #303030;
 	--main-area-color: #2D272D;
 	--main-menuContent-color: #696a70;
 	--main-menuButton-color: #6A84A1;
-	--main-text-color: #ffffff;
+	--main-text-color: #cccbca;
 }
 
 html, body {
@@ -171,12 +171,50 @@ main {
 	overflow-y: hidden;
 }
 
+#newFolder {
+	margin: 15px;
+	color: var(--main-text-color);
+	height: 5%;
+}
+
 #folderItems div {
 	margin: 15px;
+	color: var(--main-text-color);
+}
+
+.folderItem {
+	display: flex;
+	align-items: center;
 }
 
 .folderItem i {
 	margin-right: 10px;
+}
+
+.folderItem input {
+	background-color: var(--main-area-color);
+	border: none;
+	width: 60%;
+	font-size: 15px;
+	color: var(--main-text-color);
+}
+
+.folderItem input:focus {
+	outline: none;
+	background-color: var(--main-bg-color);
+}
+
+.folderName {
+	color: var(--main-text-color);
+}
+
+.folderItem .numberOfNotes {
+	display: flex;
+	font-size: 13px;
+	background-color: var(--main-bg-color);
+	width: 15%;
+	border-radius: 50px;
+	justify-content: center;
 }
 
 .listArea {
@@ -185,6 +223,7 @@ main {
 	width: 20%;
 	border-radius: 15px;
 	overflow-y: scroll;
+	color: var(--main-text-color);
 }
 
 .listArea::-webkit-scrollbar {
@@ -218,6 +257,7 @@ main {
 #autoDateTime {
 	text-align: center;
 	font-size: 16px;
+	color: var(--main-text-color);
 }
 
 #noteTitle {
@@ -225,6 +265,7 @@ main {
 	width: 100%;
 	background-color: var(--main-area-color);
 	border-style: none;
+	color: var(--main-text-color);
 }
 
 #noteTitle:focus {
@@ -246,6 +287,7 @@ main {
 	background-color: var(--main-area-color);
 	border: none;
 	resize: none;
+	color: var(--main-text-color);
 }
 
 #mainNote:focus {
