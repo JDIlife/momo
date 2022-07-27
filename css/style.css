@@ -26,7 +26,7 @@ html, body {
 	background-color: var(--main-bg-color);
 }
 
-.logo {
+#logo {
 	margin-top: 5px;
 	text-align: center;
 	font-family: sans-serif;
@@ -163,7 +163,7 @@ main {
 }
 
 
-.folderArea {
+#folderArea {
 	margin: 30px;
 	background-color:var(--main-area-color);
 	width: 15%;
@@ -217,26 +217,13 @@ main {
 	justify-content: center;
 }
 
-.listArea {
+#listArea {
 	margin: 30px;
 	background-color:var(--main-area-color);
 	width: 20%;
 	border-radius: 15px;
-	overflow-y: scroll;
 	color: var(--main-text-color);
 }
-
-.listArea::-webkit-scrollbar {
-	background-color: #7a99c4;
-	width: 15px;
-}
-
-.listArea::-webkit-scrollbar-thumb {
-	background-color: var(--main-area-color);
-	height: 20px;
-	width: 10px;
-}
-/* 왜 scrollbar-thumb이 적용이 안되는지 모르겠다 */
 
 .listItem {
 	margin: 10px;
@@ -294,7 +281,7 @@ main {
 	outline: none;
 }
 
-#submitButton {
+#submitBtn {
 	width: 50px;
 	height: 50px;
 	position: fixed;
@@ -302,7 +289,7 @@ main {
 	bottom: 7%;
 }
 
-#submitButton i {
+#submitBtn i {
 	font-size: 30px;
 }
 

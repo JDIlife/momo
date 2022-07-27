@@ -1,23 +1,20 @@
 // menu buttons
-const newFolderButton = document.getElementById("newFolderButton");
-const settingButton = document.getElementById("settingButton");
-const selectButton = document.getElementById("selectButton");
-const trashBinButton = document.getElementById("trashBinButton");
-const editNoteButton = document.getElementById("editNoteButton");
-const fontSettingButton = document.getElementById("fontSettingButton");
-const imageButton = document.getElementById("imageButton");
-const shareButton = document.getElementById("shareButton");
-const searchButton = document.getElementById("searchButton");
+const newFolderBtn = document.getElementById("newFolderBtn");
+const settingBtn = document.getElementById("settingBtn");
+const selectBtn = document.getElementById("selectBtn");
+const trashBinBtn = document.getElementById("trashBinBtn");
+const editNoteBtn = document.getElementById("editNoteBtn");
+const searchBtn = document.getElementById("searchBtn");
 
 // three big area
-const folderArea = document.getElementsByClassName("folderArea");
-const listArea = document.getElementsByClassName("listArea");
+const folderArea = document.getElementById("folderArea");
+const listArea = document.getElementById("listArea");
 const textArea = document.getElementById("textArea");
 
 
 // detail select
 const folder = document.querySelector('.folderItem');
-const darkThemeButton = document.getElementById("darkThemeButton");
+const darkThemeBtn = document.getElementById("darkThemeBtn");
 const autoDateTime = document.getElementById("autoDateTime");
 
 // folder Items
@@ -31,12 +28,12 @@ const listItems = document.getElementById('listItems');
 // Note CRUD select
 const noteTitle = document.getElementById('noteTitle');
 const mainNote = document.getElementById('mainNote');
-const submitButton = document.getElementById('submitButton');
+const submitBtn = document.getElementById('submitBtn');
 
 
 // create new folder
 
-newFolderButton.addEventListener('click', () => {
+newFolderBtn.addEventListener('click', () => {
 	newFolder.innerHTML = `
 		<div class="folderItem" onkeydown="inputFolderName()">
 		<i class="fa-solid fa-folder"></i>
@@ -102,7 +99,7 @@ let loadFolder = () => {
 
 // form validation
 
-submitButton.addEventListener('click', (e) => {
+submitBtn.addEventListener('click', (e) => {
 	e.preventDefault();
 	console.log("button clicked");
 
@@ -230,15 +227,14 @@ let updateNote = () => {
 
 // change focus to mainNote with enter
 
-noteTitle.addEventListener('keydown', ({ key }) => {
+noteTitle.addEventListener('keypress', ({ key }) => {
 	if (key == 'Enter') {
 		mainNote.focus();
-		};
-	});
-
+	};
+});
 
 // focus on the text edit erea and reset the form
-editNoteButton.addEventListener('click', () => { 
+editNoteBtn.addEventListener('click', () => { 
 	noteTitle.focus();
 	resetForm();
 });
@@ -260,7 +256,7 @@ getTime();
 setInterval(getTime, 1000);
 
 // pop-up menu
-settingButton.addEventListener('click', () => {
+settingBtn.addEventListener('click', () => {
 	const settingContent = document.querySelector('.settingContent');
 	if ( settingContent.style.display === "none" ){
 		settingContent.style.display = "block";
@@ -269,29 +265,11 @@ settingButton.addEventListener('click', () => {
 	}
 });
 
-fontSettingButton.addEventListener('click', () => {
-	const fontContent = document.querySelector('.fontContent');
-	if ( fontContent.style.display === "none" ){
-		fontContent.style.display = "block";
-	} else {
-		fontContent.style.display = "none";
-	}
-});
-
-shareButton.addEventListener('click', () => {
-	const shareContent = document.querySelector('.shareContent');
-	if ( shareContent.style.display === "none" ){
-		shareContent.style.display = "block";
-	} else {
-		shareContent.style.display = "none";
-	}
-});
-
 // dark mode change
 document.addEventListener("DOMContentLoaded", function(event) {
 	document.documentElement.setAttribute("data-theme", "light");
 	
-	darkThemeButton.onclick = function() {
+	darkThemeBtn.onclick = function() {
 		let currentTheme = document.documentElement.getAttribute("data-theme");
 
 		let switchTheme = currentTheme === "dark" ? "light" : "dark"
@@ -299,4 +277,3 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		document.documentElement.setAttribute("data-theme", switchTheme);
 	}
 });
-
