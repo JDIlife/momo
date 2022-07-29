@@ -30,6 +30,33 @@ const noteTitle = document.getElementById('noteTitle');
 const mainNote = document.getElementById('mainNote');
 const submitBtn = document.getElementById('submitBtn');
 
+// create db
+
+if (!window.indexedDB) {
+	window.alert("this browser doesn't support indexedDB");
+}
+
+let db;
+
+let dbReq = indexedDB.open("MOMO", 1);
+
+dbReq.onerror = function(event) {
+	alert('database error: ' + event.target.errorCode);
+}
+
+dbReq.onsuccess = function(event) {
+	let db = dbReq.result;
+}
+
+dbReq.onupgradeneeded = function(event) {
+	let db = dbReq.result;
+
+	let folderStore = db.createObjectStore("folders", {keyPath:"id", autoIncrement:true});
+	let noteStore = db.createObjectStore("notes", {keyPath:"id", autoIncrement:true});
+
+	noteStore.createIndex("folderName", "folderName", {unique: false});
+	
+}
 
 // create new folder
 
@@ -43,6 +70,9 @@ newFolderBtn.addEventListener('click', () => {
 	newFolder.onload = () => {
 		let folderName = document.getElementById("folderName");
 	}
+	if(newFolder.style.visibility = "hidden"){
+		newFolder.style.visibility = "visible";
+	}
 });
 
 // submit folder with Enter key
@@ -51,37 +81,83 @@ newFolderBtn.addEventListener('click', () => {
 let inputFolderName = () => {
 	if (event.key === 'Enter'){
 		acceptFolder();
-	} else {
-		console.log('failure');
+
+		newFolder.style.visibility = "hidden";
 	}
 }
 
-let folderData = [];
+// accept folder data
+
 
 let acceptFolder = () => {
-	folderData.push({
-		folderName: folderName.value,
-		index: new Date().getTime() + Math.random()
-	});
-	console.log("accept folder");
-	console.log(folderData);
 
-	localStorage.setItem("folderData", JSON.stringify(folderData));
+	let request = window.indexedDB.open('MOMO', 1);
+	request.onerror = (error) => {
+		alert('Database error', event.target.errorCode);
+	}
+		
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['folders'], 'readwrite');
+
+		transaction.oncomplete = (event) => {
+			console.log('success');
+		}
+		transaction.onerror = (event) => {
+			console.log('failed');
+		}
+
+		let objStore = transaction.objectStore('folders');
+
+
+		let addReq = objStore.add({
+			folderName: folderName.value
+		})
+	}
 
 	createFolder();
 };
 
+// create folder view
+
 let createFolder = () => {
-	folderItems.innerHTML = "";
-	folderData.map((x, y) => {
-		return (folderItems.innerHTML += `
-			<div class="folderItem" id=${y} onclick="loadFolder(this)">
-				<i class="fa-solid fa-folder"></i>
-				<span class="folderName">${x.folderName}</span>
-				<div class="numberOfNotes"></div>
-			</div>
-			`);
-	});
+
+	let request = window.indexedDB.open('MOMO', 1);
+	request.onerror = (event) => {
+		alert('Database error', event.target.errorCode);
+	}
+
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['folders'], 'readonly');
+		transaction.onerror = (event) => {console.log('error')};
+		transaction.oncomplete = (event) => {console.log('success')};
+
+		let objStore = transaction.objectStore('folders');
+		let cursorReq = objStore.openCursor();
+
+		folderItems.innerHTML = "";
+
+		cursorReq.onsuccess = (event) => {
+			let cursor = event.target.result;
+
+			if(cursor){
+				let value = objStore.get(cursor.key);
+
+				value.onsuccess = (event) => {
+					console.log(event.target.result);
+					return(folderItems.innerHTML += `
+						<div class="folderItem" onclick="loadFolder(this)">
+							<i class="fa-solid fa-folder"></i>
+							<span class="folderName">${value.result.folderName}</span>
+							<div class="numberOfNotes"></div>
+						</div>
+					`);
+				}
+				cursor.continue();
+			}
+		}
+	}
 };
 
 let loadFolder = () => {
@@ -125,6 +201,20 @@ let formValidation = () => {
 let data = [];
 
 let acceptData = () => {
+
+	let storeNotes = db.transaction(['notes'], 'readwrite').objectStore('notes');
+
+	let addNoteReq = storeNotes.add({
+		date: autoDateTime.innerHTML,
+		title: noteTitle.value,
+		main: mainNote.value,
+
+	})
+
+	addNoteReq.addEventListener('success', function(event){
+		console.log(storeNotes.result);
+	})
+
 	data.push({
 		date: autoDateTime.innerHTML,
 		title: noteTitle.value,
