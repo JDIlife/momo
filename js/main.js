@@ -92,7 +92,7 @@ let inputFolderName = () => {
 let acceptFolder = () => {
 
 	let request = window.indexedDB.open('MOMO', 1);
-	request.onerror = (error) => {
+	request.onerror = (event) => {
 		alert('Database error', event.target.errorCode);
 	}
 		
@@ -167,11 +167,13 @@ let loadFolder = () => {
 
 //restore the folder when you refresh the page
 
+/*
 (() => {
 	folderData = JSON.parse(localStorage.getItem("folderData")) || [];
 	createFolder();
 	console.log(folderData);
 })();
+*/
 
 // form validation
 
@@ -198,56 +200,78 @@ let formValidation = () => {
 
 // accept data
 
-let data = [];
-
 let acceptData = () => {
 
-	let storeNotes = db.transaction(['notes'], 'readwrite').objectStore('notes');
+	let request = window.indexedDB.open('MOMO', 1);
+	request.onerror = (event) => {
+		alert('Database error', event.target.errroCode);
+	}
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['notes'], 'readwrite');
 
-	let addNoteReq = storeNotes.add({
-		date: autoDateTime.innerHTML,
-		title: noteTitle.value,
-		main: mainNote.value,
+		transaction.oncomplete = (event) => {
+			console.log('success');
+		}
+		transaction.onerror = (event) => {
+			console.log('failed');
+		}
+		let objStore = transaction.objectStore('notes');
 
-	})
-
-	addNoteReq.addEventListener('success', function(event){
-		console.log(storeNotes.result);
-	})
-
-	data.push({
-		date: autoDateTime.innerHTML,
-		title: noteTitle.value,
-		main: mainNote.value,
-		index: new Date().getTime() + Math.random(),
-		folder: "normal"
-	});
-	console.log(data);
-
-	localStorage.setItem("data", JSON.stringify(data));
-
+		let addReq = objStore.add({
+			date: autoDateTime.innerHTML,
+			title: noteTitle.value,
+			main: mainNote.value,
+			folderName: 'normal'
+		})
+	}
 	createNote();
 };
 
 // create note
 
 let createNote = () => {
-	listItems.innerHTML = "";
-	data.map((x, y) => {
-		return (listItems.innerHTML += `
-			<div class="listItem" id=${y}>
-				<div onclick="loadNote(this)" id=${x.index}>
-					<div class="title">${x.title}</div>
-					<div class="textContents">${x.main}</div>
-					<span class="editDate">${x.date}</span>
-				</div>
-				<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
-				<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
-			</div>
-			`);
-	});
 
-	resetForm();
+	let request = window.indexedDB.open('MOMO', 1);
+	request.onerror = (event) => {
+		alert('Database error', event.target.errorCode);
+	}
+
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['notes'], 'readonly');
+		transaction.onerror = (event) => {console.log('error')};
+		transaction.oncomplete = (event) => {console.log('success')};
+
+		let objStore = transaction.objectStore('notes');
+		let cursorReq = objStore.openCursor();
+
+		listItems.innerHTML = "";
+
+		cursorReq.onsuccess = (event) => {
+			let cursor = event.target.result;
+
+			if(cursor){
+				let value = objStore.get(cursor.key);
+
+				value.onsuccess = (event) => {
+					return (listItems.innerHTML += `
+						<div class="listItem" id=${event.target.result.id}>
+						<div onclick="loadNote(this)">
+						<div class="title">${event.target.result.title}</div>
+						<div class="textContents">${event.target.result.main}</div>
+						<span class="editDate">${event.target.result.date}</span>
+						</div>
+						<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
+						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+						</div>
+						`);
+				}
+				cursor.continue();
+			}
+		}
+	}
+	//resetForm();
 };
 
 // after user input, reset the text field
@@ -260,31 +284,38 @@ let resetForm = () => {
 
 // delete note
 
-let deleteNote = (e) => {
-	console.log(e.parentElement.id);
-	e.parentElement.remove();
+let deleteNote = (event) => {
 
-	data.splice(e.parentElement.id, 1);
+	let request = window.indexedDB.open('MOMO', 1);
+	request.onerror = (event) => {
+		console.log(event.target.errorCode);
+	}
 
-	localStorage.setItem("data", JSON.stringify(data));
+	request.onsuccess = () => {
+		let db = request.result;
+		let transaction = db.transaction('notes', 'readwrite');
+		transaction.onerror = (event) => {console.log('failed')};
+		transaction.oncomplete = (event) => {console.log('success')};
+		
+		let objStore = transaction.objectStore('notes');
+		let deleteReq = objStore.delete(Number(event.parentElement.id));
+		deleteReq.onsuccess = (event) => {
+			console.log('deleted');
+		}
+	}
 
 	createNote();
-
-	resetForm();
-
-	console.log(data);
-
 };
 
 // load note
 
-const textId = document.getElementsByClassName("textId")[0];
+let textId = document.getElementsByClassName("textId")[0];
 
 
 let loadNote = (e) => {
 	noteTitle.value = e.childNodes[1].innerHTML;
 	mainNote.value = e.childNodes[3].innerHTML;
-	textId.setAttribute('id', e.id);
+	textId.setAttribute('id', e.parentElement.id);
 	console.log(e.parentElement.id);
 };
 
@@ -301,17 +332,41 @@ let loadNote = (e) => {
 const listItem = document.getElementsByClassName("listItem");
 
 let updateNote = () => {
-	for (let i = 0; i < listItem.length; i++){
-		if ( data[i].index == textId.id ) {
-			data[i].date = autoDateTime.innerHTML;
-			data[i].title = noteTitle.value;
-			data[i].main = mainNote.value;
-			localStorage.setItem("data", JSON.stringify(data));
-			
-			createNote();
-		}
+
+	let request = window.indexedDB.open('MOMO', 1);
+	request.onerror = (event) => {
+		alert('Database error', event.target.errorCode);
 	}
-	console.log("update note");
+
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['notes'], 'readwrite');
+		transaction.onerror = (event) => {console.log('failed')};
+		transaction.oncomplete = (event) => {console.log('success')};
+
+		let objStore = transaction.objectStore('notes');
+		let objStoreReq = objStore.get(Number(textId.id));
+
+		objStoreReq.onsuccess = (event) => {
+			let noteData = objStoreReq.result;
+
+			noteData.date = autoDateTime.innerHTML;
+			noteData.title = noteTitle.value;
+			noteData.main = mainNote.value;
+
+			let updateNoteReq = objStore.put(noteData);
+			
+			updateNoteReq.onerror = (event) => {
+				console.log('update error');
+			};
+			updateNoteReq.onsuccess = (event) => {
+				console.log('update success');
+			};
+		};
+	};
+
+	createNote();
+
 }
 
 
