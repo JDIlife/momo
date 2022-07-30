@@ -177,6 +177,10 @@ main {
 	height: 5%;
 }
 
+#normalFolder {
+	margin: 15px;
+}
+
 #folderItems div {
 	margin: 15px;
 	color: var(--main-text-color);

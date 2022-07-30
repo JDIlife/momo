@@ -6,7 +6,8 @@ const trashBinBtn = document.getElementById("trashBinBtn");
 const editNoteBtn = document.getElementById("editNoteBtn");
 const searchBtn = document.getElementById("searchBtn");
 
-// three big area
+// big area
+const main = document.querySelector("main");
 const folderArea = document.getElementById("folderArea");
 const listArea = document.getElementById("listArea");
 const textArea = document.getElementById("textArea");
@@ -147,7 +148,7 @@ let createFolder = () => {
 				value.onsuccess = (event) => {
 					console.log(event.target.result);
 					return(folderItems.innerHTML += `
-						<div class="folderItem" onclick="loadFolder(this)">
+						<div class="folderItem" onclick="loadFolder(this)" id=${value.result.folderName}>
 							<i class="fa-solid fa-folder"></i>
 							<span class="folderName">${value.result.folderName}</span>
 							<div class="numberOfNotes"></div>
@@ -160,12 +161,11 @@ let createFolder = () => {
 	}
 };
 
-/*
-let loadFolder = () => {
+let loadFolder = (event) => {
+	main.setAttribute('id', event.id);
+	createFolder();
 	createNote();
-	loadNote(listItems);
 }
-*/
 
 //restore the folder when you refresh the page
 
@@ -220,7 +220,7 @@ let acceptData = () => {
 			date: autoDateTime.innerHTML,
 			title: noteTitle.value,
 			main: mainNote.value,
-			folderName: 'normal'
+			folderName: main.id
 		})
 	}
 	createNote();
@@ -242,11 +242,13 @@ let createNote = () => {
 		transaction.oncomplete = (event) => {console.log('success')};
 
 		let objStore = transaction.objectStore('notes');
-		let cursorReq = objStore.openCursor();
+
+		let folderNameIndex = objStore.index('folderName');
+		let keyRng = IDBKeyRange.only(main.id);
 
 		listItems.innerHTML = "";
 
-		cursorReq.onsuccess = (event) => {
+		folderNameIndex.openCursor(keyRng).onsuccess = function(event) {
 			let cursor = event.target.result;
 
 			if(cursor){
@@ -254,19 +256,20 @@ let createNote = () => {
 
 				value.onsuccess = (event) => {
 					return (listItems.innerHTML += `
-						<div class="listItem" id=${event.target.result.id}>
-							<div onclick="loadNote(this)">
-								<div class="title">${event.target.result.title}</div>
-								<div class="textContents">${event.target.result.main}</div>
-								<span class="editDate">${event.target.result.date}</span>
-							</div>
-						<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
+						<div class="listItem" id=${cursor.value.id}>
+						<div onclick="loadNote(this)">
+						<div class="title">${cursor.value.title}</div>
+						<div class="textContents">${cursor.value.main}</div>
+						<span class="editDate">${cursor.value.date}</span>
+						</div>
+						<span class="folderItem"><i class="fa-solid fa-folder"></i>${cursor.key}</span>
 						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
 						</div>
 						`);
 				}
 				cursor.continue();
 			}
+
 		}
 	}
 	//resetForm();
