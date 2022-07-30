@@ -160,20 +160,18 @@ let createFolder = () => {
 	}
 };
 
+/*
 let loadFolder = () => {
 	createNote();
 	loadNote(listItems);
 }
+*/
 
 //restore the folder when you refresh the page
 
-/*
 (() => {
-	folderData = JSON.parse(localStorage.getItem("folderData")) || [];
 	createFolder();
-	console.log(folderData);
 })();
-*/
 
 // form validation
 
@@ -257,11 +255,11 @@ let createNote = () => {
 				value.onsuccess = (event) => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${event.target.result.id}>
-						<div onclick="loadNote(this)">
-						<div class="title">${event.target.result.title}</div>
-						<div class="textContents">${event.target.result.main}</div>
-						<span class="editDate">${event.target.result.date}</span>
-						</div>
+							<div onclick="loadNote(this)">
+								<div class="title">${event.target.result.title}</div>
+								<div class="textContents">${event.target.result.main}</div>
+								<span class="editDate">${event.target.result.date}</span>
+							</div>
 						<span class="folderItem"><i class="fa-solid fa-folder"></i>foldername</span>
 						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
 						</div>
@@ -322,8 +320,6 @@ let loadNote = (e) => {
 // restore the note when you refresh the page
 
 (() => {
-	data = JSON.parse(localStorage.getItem("data")) || [];
-	console.log(data);
 	createNote();
 })();
 
