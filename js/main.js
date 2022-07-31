@@ -12,6 +12,8 @@ const folderArea = document.getElementById("folderArea");
 const listArea = document.getElementById("listArea");
 const textArea = document.getElementById("textArea");
 
+// search area
+const searchInput = document.getElementById("searchInput");
 
 // detail select
 const folder = document.querySelector('.folderItem');
@@ -39,7 +41,7 @@ if (!window.indexedDB) {
 
 let db;
 
-let dbReq = indexedDB.open("MOMO", 1);
+let dbReq = indexedDB.open("MOMO", 2);
 
 dbReq.onerror = function(event) {
 	alert('database error: ' + event.target.errorCode);
@@ -56,6 +58,8 @@ dbReq.onupgradeneeded = function(event) {
 	let noteStore = db.createObjectStore("notes", {keyPath:"id", autoIncrement:true});
 
 	noteStore.createIndex("folderName", "folderName", {unique: false});
+	noteStore.createIndex("title", "title", {unique: false});
+	noteStore.createIndex("main", "main", {unique: false});
 	
 }
 
@@ -80,7 +84,7 @@ newFolderBtn.addEventListener('click', () => {
 
 
 let inputFolderName = () => {
-	if (event.key === 'Enter'){
+	if (folderName.value != "" && event.key === 'Enter'){
 		acceptFolder();
 
 		newFolder.style.visibility = "hidden";
@@ -92,7 +96,7 @@ let inputFolderName = () => {
 
 let acceptFolder = () => {
 
-	let request = window.indexedDB.open('MOMO', 1);
+	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database error', event.target.errorCode);
 	}
@@ -123,7 +127,7 @@ let acceptFolder = () => {
 
 let createFolder = () => {
 
-	let request = window.indexedDB.open('MOMO', 1);
+	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database error', event.target.errorCode);
 	}
@@ -200,7 +204,7 @@ let formValidation = () => {
 
 let acceptData = () => {
 
-	let request = window.indexedDB.open('MOMO', 1);
+	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database error', event.target.errroCode);
 	}
@@ -230,7 +234,7 @@ let acceptData = () => {
 
 let createNote = () => {
 
-	let request = window.indexedDB.open('MOMO', 1);
+	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database error', event.target.errorCode);
 	}
@@ -287,7 +291,7 @@ let resetForm = () => {
 
 let deleteNote = (event) => {
 
-	let request = window.indexedDB.open('MOMO', 1);
+	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		console.log(event.target.errorCode);
 	}
@@ -332,7 +336,7 @@ const listItem = document.getElementsByClassName("listItem");
 
 let updateNote = () => {
 
-	let request = window.indexedDB.open('MOMO', 1);
+	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database error', event.target.errorCode);
 	}
@@ -408,6 +412,107 @@ settingBtn.addEventListener('click', () => {
 		settingContent.style.display = "none";
 	}
 });
+
+// search
+
+searchBtn.addEventListener('click', (e) => {
+	e.preventDefault();
+
+	if(searchInput.value != ""){
+		searchByTitle();
+		searchByMain();
+	}
+})
+
+let searchByTitle = () => {
+	let request = window.indexedDB.open('MOMO', 2);
+	request.onerror = (event) => {
+		alert('Database Error', event.target.errorCode);
+	}
+	
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['notes'], 'readonly');
+
+		transaction.onerror = (event) => {console.log('failed')};
+		transaction.oncomplete = (event) => {console.log('success')}
+
+		let objStore = transaction.objectStore('notes');
+
+		let titleIndex = objStore.index('title');
+		let titleRng = IDBKeyRange.only(searchInput.value);
+
+		listItems.innerHTML = "";
+
+		titleIndex.openCursor(titleRng).onsuccess = function(event) {
+			let titleCursor = event.target.result;
+
+			if(titleCursor){
+				let titleValue = objStore.get(titleCursor.key);
+
+				titleValue.onsuccess = (event) => {
+					return (listItems.innerHTML += `
+						<div class="listItem" id=${titleCursor.value.id}>
+						<div onclick="loadNote(this)">
+						<div class="title">${titleCursor.value.title}</div>
+						<div class="textContents">${titleCursor.value.main}</div>
+						<span class="editDate">${titleCursor.value.date}</span>
+						</div>
+						<span class="folderItem"><i class="fa-solid fa-folder"></i>${titleCursor.value.folderName}</span>
+						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+						</div>
+						`);
+				};
+				titleCursor.continue();
+			}
+		}
+	}
+}
+
+let searchByMain = () => {
+	let request = window.indexedDB.open('MOMO', 2);
+	request.onerror = (event) => {
+		alert('Database Error', event.target.errorCode);
+	}
+	
+	request.onsuccess = (event) => {
+		let db = request.result;
+		let transaction = db.transaction(['notes'], 'readonly');
+
+		transaction.onerror = (event) => {console.log('failed')};
+		transaction.oncomplete = (event) => {console.log('success')}
+
+		let objStore = transaction.objectStore('notes');
+
+		let mainIndex = objStore.index('main');
+		let mainRng = IDBKeyRange.only(searchInput.value);
+
+		listItems.innerHTML = "";
+
+		mainIndex.openCursor(mainRng).onsuccess = function(event) {
+			let mainCursor = event.target.result;
+
+			if(mainCursor){
+				let mainValue = objStore.get(mainCursor.key);
+
+				mainValue.onsuccess = (event) => {
+					return (listItems.innerHTML += `
+						<div class="listItem" id=${mainCursor.value.id}>
+						<div onclick="loadNote(this)">
+						<div class="title">${mainCursor.value.title}</div>
+						<div class="textContents">${mainCursor.value.main}</div>
+						<span class="editDate">${mainCursor.value.date}</span>
+						</div>
+						<span class="folderItem"><i class="fa-solid fa-folder"></i>${mainCursor.value.folderName}</span>
+						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+						</div>
+						`);
+				};
+				mainCursor.continue();
+			}
+		}
+	}
+}
 
 // dark mode change
 document.addEventListener("DOMContentLoaded", function(event) {

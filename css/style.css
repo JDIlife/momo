@@ -8,6 +8,7 @@
 	--main-menuContent-color: #a4abdb;
 	--main-menuButton-color: #000000;
 	--main-text-color: #000000;
+	--main-focus-color: #3fa2e0;
 }
 
 [data-theme="dark"] {
@@ -82,13 +83,40 @@ ul li {
 	font-size: 30px;
 }
 
-#searchButton {
-	margin: 0px 10px 0px 10px;
+#searchArea {
+	background-color: var(--main-area-color);
+	font-size: 18px;
+	border: none;
+	border-radius: 15px;
+	outline: none;
+	height: auto;
+	width: 60%;
+	display: flex;
+	align-items: center;
+}
+
+#searchBtn {
+	margin: 0px 4px 0px 10px;
 	padding: 0;
 	background: none;
 	border: none;
 	cursor: pointer;
-	font-size: 30px;
+	font-size: 22px;
+}
+
+#searchInput {
+	display: inline-block;
+	width: 80%;
+	height: 100%;
+	border: none;
+	outline: none;
+	background-color: var(--main-area-color);
+	font-size: 18px;
+	color: var(--main-text-color);
+}
+
+#searchArea:focus-within {
+	border: 2px solid var(--main-focus-color);
 }
 
 .menuContents {
@@ -115,48 +143,6 @@ ul li {
 	margin: 5px;
 }
 
-.fontContent {
-	width: 150px;
-	height: 180px;
-	border-radius: 15px;
-	background-color: var(--main-menuContent-color);
-	position: absolute;
-	left: 51%;
-	display: none;
-}
-
-#fontStyle {
-	display: flex;
-	justify-content:space-around;
-}
-
-#textStyle li {
-	margin-left: 10px;
-}
-
-#textStyle li button {
-	font-size: 15px;
-}
-
-.shareContent {
-	width: 150px;
-	height: 180px;
-	border-radius: 15px;
-	background-color: var(--main-menuContent-color);
-	position: absolute;
-	right: 12%;
-	display: none;
-}
-
-.shareContent ul li button {
-	font-size: 20px;
-	margin: 10px;
-}
-
-.shareContent ul li i {
-	margin-left: 10px;
-}
-
 main {
 	display: flex;
 	height: 85vh;
@@ -169,6 +155,7 @@ main {
 	width: 15%;
 	border-radius: 15px;
 	overflow-y: hidden;
+	cursor: pointer;
 }
 
 #newFolder {
@@ -179,6 +166,7 @@ main {
 
 #normalFolder {
 	margin: 15px;
+	color: var(--main-text-color);
 }
 
 #folderItems div {
@@ -227,6 +215,7 @@ main {
 	width: 20%;
 	border-radius: 15px;
 	color: var(--main-text-color);
+	cursor: pointer;
 }
 
 .listItem {
@@ -256,6 +245,7 @@ main {
 	width: 100%;
 	background-color: var(--main-area-color);
 	border-style: none;
+	border-radius: 15px;
 	color: var(--main-text-color);
 }
 
