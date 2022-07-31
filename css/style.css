@@ -9,6 +9,7 @@
 	--main-menuButton-color: #000000;
 	--main-text-color: #000000;
 	--main-focus-color: #3fa2e0;
+	--main-scroll-color: #8fc3cc;
 }
 
 [data-theme="dark"] {
@@ -17,6 +18,7 @@
 	--main-menuContent-color: #696a70;
 	--main-menuButton-color: #6A84A1;
 	--main-text-color: #cccbca;
+	--main-scroll-color: #5e5a4b;
 }
 
 html, body {
@@ -149,13 +151,22 @@ main {
 }
 
 
+::-webkit-scrollbar{
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+	background-color: var(--main-scroll-color);
+	border-radius: 15px;
+}
+
 #folderArea {
 	margin: 30px;
 	background-color:var(--main-area-color);
 	width: 15%;
 	border-radius: 15px;
-	overflow-y: hidden;
-	cursor: pointer;
+	overflow-y: auto;
 }
 
 #newFolder {
@@ -177,6 +188,7 @@ main {
 .folderItem {
 	display: flex;
 	align-items: center;
+	cursor: pointer;
 }
 
 .folderItem i {
@@ -215,13 +227,15 @@ main {
 	width: 20%;
 	border-radius: 15px;
 	color: var(--main-text-color);
-	cursor: pointer;
+	overflow-y: scroll;
 }
+
 
 .listItem {
 	margin: 10px;
 	padding-bottom: 10px;
 	border-bottom: 2px solid gray;
+	cursor: pointer;
 }
 
 .listItem .title {

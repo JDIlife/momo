@@ -33,7 +33,7 @@
 						<li><button id="editNoteBtn"><i class="fa-solid fa-pen-to-square"></i></button></li>
 						<div id="searchArea">
 							<button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
-							<input id="searchInput" autocomplete="off">
+							<input id="searchInput" autocomplete="off" onkeypress="searchByEnter(this)">
 						</div>
 					</ul>
 				</div>
@@ -50,7 +50,7 @@
 		</div>
 	</nav>
 	<main id="normal">
-		<div id="folderArea">
+		<div id="folderArea" class="folderScrollbar">
 			<div id="newFolder">
 			</div>
 			<div id="normalFolder">
@@ -64,7 +64,7 @@
 			</div>
 			</div>
 		</div>
-		<div id="listArea">
+		<div id="listArea" class="listScrollbar">
 			<div id="listItems">
 			</div>
 		</div>

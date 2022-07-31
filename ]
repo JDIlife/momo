@@ -430,6 +430,8 @@ let searchByEnter = () => {
 	if(searchInput.value != "" && event.key === 'Enter'){
 		searchByTitle();
 		searchByMain();
+	} else {
+		createNote();
 	}
 }
 
