@@ -262,7 +262,7 @@ let createNote = () => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${cursor.value.id}>
 							<div class="checkboxDiv hidden">
-								<input type="checkbox" id="checkbox${cursor.value.id}">
+								<input type="checkbox" name="checkNotes" value="checked" id="checkbox${cursor.value.id}">
 							</div>
 							<div onclick="loadNote(this)">
 								<label for="checkbox${cursor.value.id}">
@@ -470,7 +470,7 @@ let searchByTitle = () => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${titleCursor.value.id}>
 							<div class="checkboxDiv hidden">
-								<input type="checkbox" id="checkbox${titleCursor.value.id}">
+								<input type="checkbox" name="checkNotes" value="checked" id="checkbox${titleCursor.value.id}">
 							</div>
 							<div onclick="loadNote(this)">
 								<label for="checkbox${titleCursor.value.id}">
@@ -520,7 +520,7 @@ let searchByMain = () => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${mainCursor.value.id}>
 							<div class="checkboxDiv hidden">
-								<input type="checkbox" id="checkbox${mainCursor.value.id}">
+								<input type="checkbox" name="checkNotes" value="checked" id="checkbox${mainCursor.value.id}">
 							</div>
 							<div onclick="loadNote(this)">
 								<label for="checkbox${mainCursor.value.id}">
@@ -577,7 +577,10 @@ selectBtn.addEventListener('click', (event) => {
 			checkbox[i].classList.remove("hidden");
 		} else {
 			checkbox[i].classList.add("hidden");
-			checkbox[i].checked = false;
+			let checkboxes = document.getElementsByName('checkNotes');
+			checkboxes.forEach((checkbox) => {
+				checkbox.checked = false;
+			})
 		}
 	}
 })
