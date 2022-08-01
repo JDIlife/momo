@@ -568,6 +568,7 @@ textArea.addEventListener('keypress', (event) => {
 })
 
 // show and hide listItem checkbox
+let checkboxes = document.getElementsByName('checkNotes');
 
 selectBtn.addEventListener('click', (event) => {
 	let checkbox = document.querySelectorAll(".checkboxDiv");
@@ -577,7 +578,6 @@ selectBtn.addEventListener('click', (event) => {
 			checkbox[i].classList.remove("hidden");
 		} else {
 			checkbox[i].classList.add("hidden");
-			let checkboxes = document.getElementsByName('checkNotes');
 			checkboxes.forEach((checkbox) => {
 				checkbox.checked = false;
 			})
@@ -589,4 +589,29 @@ selectBtn.addEventListener('click', (event) => {
 
 trashBinBtn.addEventListener('click', () => {
 
+	checkboxes.forEach((checkbox) => {
+		
+		if(checkbox.checked == true) {
+
+			let request = window.indexedDB.open('MOMO', 2);
+			request.onerror = (event) => {
+			console.log(event.target.errorCode);
+			}
+
+			request.onsuccess = () => {
+				let db = request.result;
+				let transaction = db.transaction('notes', 'readwrite');
+				transaction.onerror = (event) => {console.log('failed')};
+				transaction.oncomplete = (event) => {console.log('success')};
+		
+				let objStore = transaction.objectStore('notes');
+				let deleteReq = objStore.delete(Number(checkbox.parentElement.parentElement.id));
+				deleteReq.onsuccess = (event) => {
+					console.log('deleted');
+				}
+			}
+
+			createNote();
+		}
+	})
 })
