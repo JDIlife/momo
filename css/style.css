@@ -10,6 +10,7 @@
 	--main-text-color: #000000;
 	--main-focus-color: #3fa2e0;
 	--main-scroll-color: #8fc3cc;
+	--main-hover-color: #2ba4a6;
 }
 
 [data-theme="dark"] {
@@ -235,6 +236,12 @@ main {
 	margin: 10px;
 	padding-bottom: 10px;
 	border-bottom: 2px solid gray;
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+}
+
+.listItem label {
 	cursor: pointer;
 }
 
@@ -246,6 +253,24 @@ main {
 .listItem .editDate {
 	font-size: 15px;
 	padding-right: 10px;
+}
+
+.checkbox + label{
+	border-radius: 50px;
+}
+
+.hidden{
+	visibility: hidden;
+}
+
+.title {
+	height: 24px;
+	overflow: hidden;
+}
+
+.textContents {
+	height: 20px;
+	overflow: hidden;
 }
 
 #autoDateTime {

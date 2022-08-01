@@ -261,13 +261,18 @@ let createNote = () => {
 				value.onsuccess = (event) => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${cursor.value.id}>
-						<div onclick="loadNote(this)">
-						<div class="title">${cursor.value.title}</div>
-						<div class="textContents">${cursor.value.main}</div>
-						<span class="editDate">${cursor.value.date}</span>
-						</div>
-						<span class="folderItem"><i class="fa-solid fa-folder"></i>${cursor.key}</span>
-						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							<div class="checkboxDiv hidden">
+								<input type="checkbox" id="checkbox${cursor.value.id}">
+							</div>
+							<div onclick="loadNote(this)">
+								<label for="checkbox${cursor.value.id}">
+									<div class="title">${cursor.value.title}</div>
+									<div class="textContents">${cursor.value.main}</div>
+									<span class="editDate">${cursor.value.date}</span>
+								</label>
+									<span class="folderItem"><i class="fa-solid fa-folder"></i>${cursor.key}</span>
+									<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							</div>
 						</div>
 						`);
 				}
@@ -318,10 +323,11 @@ let textId = document.getElementsByClassName("textId")[0];
 
 
 let loadNote = (e) => {
-	noteTitle.value = e.childNodes[1].innerHTML;
-	mainNote.value = e.childNodes[3].innerHTML;
+	noteTitle.value = e.childNodes[1].childNodes[1].innerHTML;
+	mainNote.value = e.childNodes[1].childNodes[3].innerHTML;
 	textId.setAttribute('id', e.parentElement.id);
 	console.log(e.parentElement.id);
+	console.log(e.childNodes);
 };
 
 // restore the note when you refresh the page
@@ -455,6 +461,7 @@ let searchByTitle = () => {
 
 		titleIndex.openCursor(titleRng).onsuccess = function(event) {
 			let titleCursor = event.target.result;
+			let searchId = [];
 
 			if(titleCursor){
 				let titleValue = objStore.get(titleCursor.key);
@@ -462,13 +469,18 @@ let searchByTitle = () => {
 				titleValue.onsuccess = (event) => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${titleCursor.value.id}>
-						<div onclick="loadNote(this)">
-						<div class="title">${titleCursor.value.title}</div>
-						<div class="textContents">${titleCursor.value.main}</div>
-						<span class="editDate">${titleCursor.value.date}</span>
-						</div>
-						<span class="folderItem"><i class="fa-solid fa-folder"></i>${titleCursor.value.folderName}</span>
-						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							<div class="checkboxDiv hidden">
+								<input type="checkbox" id="checkbox${titleCursor.value.id}">
+							</div>
+							<div onclick="loadNote(this)">
+								<label for="checkbox${titleCursor.value.id}">
+									<div class="title">${titleCursor.value.title}</div>
+									<div class="textContents">${titleCursor.value.main}</div>
+									<span class="editDate">${titleCursor.value.date}</span>
+								</label>
+								<span class="folderItem"><i class="fa-solid fa-folder"></i>${titleCursor.value.folderName}</span>
+								<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							</div>
 						</div>
 						`);
 				};
@@ -507,13 +519,18 @@ let searchByMain = () => {
 				mainValue.onsuccess = (event) => {
 					return (listItems.innerHTML += `
 						<div class="listItem" id=${mainCursor.value.id}>
-						<div onclick="loadNote(this)">
-						<div class="title">${mainCursor.value.title}</div>
-						<div class="textContents">${mainCursor.value.main}</div>
-						<span class="editDate">${mainCursor.value.date}</span>
-						</div>
-						<span class="folderItem"><i class="fa-solid fa-folder"></i>${mainCursor.value.folderName}</span>
-						<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							<div class="checkboxDiv hidden">
+								<input type="checkbox" id="checkbox${mainCursor.value.id}">
+							</div>
+							<div onclick="loadNote(this)">
+								<label for="checkbox${mainCursor.value.id}">
+									<div class="title">${mainCursor.value.title}</div>
+									<div class="textContents">${mainCursor.value.main}</div>
+									<span class="editDate">${mainCursor.value.date}</span>
+								</label>
+								<span class="folderItem"><i class="fa-solid fa-folder"></i>${mainCursor.value.folderName}</span>
+								<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							</div>
 						</div>
 						`);
 				};
@@ -539,3 +556,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		document.documentElement.setAttribute("data-theme", switchTheme);
 	}
 });
+
+// submit with S-Enter
+textArea.addEventListener('keypress', (event) => {
+	if(event.shiftKey && event.key == 'Enter'){
+
+		event.preventDefault();
+
+		formValidation();
+	}
+})
+
+// show and hide listItem checkbox
+
+selectBtn.addEventListener('click', (event) => {
+	let checkbox = document.querySelectorAll(".checkboxDiv");
+
+	for(let i = 0; i < listItems.childElementCount; i++){
+		if( checkbox[i].classList.contains('hidden') ){
+			checkbox[i].classList.remove("hidden");
+		} else {
+			checkbox[i].classList.add("hidden");
+			checkbox[i].checked = false;
+		}
+	}
+})
+
+// delete checked notes
+
+trashBinBtn.addEventListener('click', () => {
+
+})
