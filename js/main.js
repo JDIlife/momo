@@ -610,8 +610,7 @@ trashBinBtn.addEventListener('click', () => {
 					console.log('deleted');
 				}
 			}
-
-			createNote();
 		}
 	})
+	createNote();
 })
