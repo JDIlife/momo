@@ -155,7 +155,6 @@ let createFolder = () => {
 						<div class="folderItem" onclick="loadFolder(this)" id=${value.result.folderName}>
 							<i class="fa-solid fa-folder"></i>
 							<span class="folderName">${value.result.folderName}</span>
-							<div class="numberOfNotes"></div>
 						</div>
 					`);
 				}
@@ -170,6 +169,8 @@ let loadFolder = (event) => {
 	createFolder();
 	createNote();
 }
+
+// R-click menu
 
 //restore the folder when you refresh the page
 
@@ -308,7 +309,7 @@ let deleteNote = (event) => {
 		transaction.oncomplete = (event) => {console.log('success')};
 		
 		let objStore = transaction.objectStore('notes');
-		let deleteReq = objStore.delete(Number(event.parentElement.id));
+		let deleteReq = objStore.delete(Number(event.parentElement.parentElement.id));
 		deleteReq.onsuccess = (event) => {
 			console.log('deleted');
 		}
@@ -426,7 +427,6 @@ searchBtn.addEventListener('click', (e) => {
 
 	if(searchInput.value != ""){
 		searchByTitle();
-		searchByMain();
 	}
 })
 
@@ -435,7 +435,6 @@ searchBtn.addEventListener('click', (e) => {
 let searchByEnter = () => {
 	if(searchInput.value != "" && event.key === 'Enter'){
 		searchByTitle();
-		searchByMain();
 	}
 }
 
@@ -445,6 +444,8 @@ let searchByTitle = () => {
 		alert('Database Error', event.target.errorCode);
 	}
 	
+	let searchId = [];
+
 	request.onsuccess = (event) => {
 		let db = request.result;
 		let transaction = db.transaction(['notes'], 'readonly');
@@ -455,13 +456,12 @@ let searchByTitle = () => {
 		let objStore = transaction.objectStore('notes');
 
 		let titleIndex = objStore.index('title');
-		let titleRng = IDBKeyRange.bound(searchInput.value, searchInput.value + 'f');
+		let titleRng = IDBKeyRange.bound(searchInput.value, searchInput.value + '\uffff');
 
 		listItems.innerHTML = "";
 
 		titleIndex.openCursor(titleRng).onsuccess = function(event) {
 			let titleCursor = event.target.result;
-			let searchId = [];
 
 			if(titleCursor){
 				let titleValue = objStore.get(titleCursor.key);
@@ -485,17 +485,21 @@ let searchByTitle = () => {
 						`);
 				};
 				titleCursor.continue();
+				searchId.push(titleCursor.value.id);
 			}
 		}
 	}
+	return searchId;
+	searchByMain(searchId);
 }
 
-let searchByMain = () => {
+let searchByMain = (searchId) => {
 	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database Error', event.target.errorCode);
 	}
 	
+	console.log("main search", searchId);
 	request.onsuccess = (event) => {
 		let db = request.result;
 		let transaction = db.transaction(['notes'], 'readonly');
@@ -506,7 +510,7 @@ let searchByMain = () => {
 		let objStore = transaction.objectStore('notes');
 
 		let mainIndex = objStore.index('main');
-		let mainRng = IDBKeyRange.bound(searchInput.value, searchInput.value + 'f');
+		let mainRng = IDBKeyRange.bound(searchInput.value, searchInput.value + '\uffff');
 
 		listItems.innerHTML = "";
 
@@ -517,22 +521,26 @@ let searchByMain = () => {
 				let mainValue = objStore.get(mainCursor.key);
 
 				mainValue.onsuccess = (event) => {
-					return (listItems.innerHTML += `
-						<div class="listItem" id=${mainCursor.value.id}>
+					if(mainCursor.value.id in searchId){
+						console.log("repeated note");
+					} else {
+						return (listItems.innerHTML += `
+							<div class="listItem" id=${mainCursor.value.id}>
 							<div class="checkboxDiv hidden">
-								<input type="checkbox" name="checkNotes" value="checked" id="checkbox${mainCursor.value.id}">
+							<input type="checkbox" name="checkNotes" value="checked" id="checkbox${mainCursor.value.id}">
 							</div>
 							<div onclick="loadNote(this)">
-								<label for="checkbox${mainCursor.value.id}">
-									<div class="title">${mainCursor.value.title}</div>
-									<div class="textContents">${mainCursor.value.main}</div>
-									<span class="editDate">${mainCursor.value.date}</span>
-								</label>
-								<span class="folderItem"><i class="fa-solid fa-folder"></i>${mainCursor.value.folderName}</span>
-								<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
+							<label for="checkbox${mainCursor.value.id}">
+							<div class="title">${mainCursor.value.title}</div>
+							<div class="textContents">${mainCursor.value.main}</div>
+							<span class="editDate">${mainCursor.value.date}</span>
+							</label>
+							<span class="folderItem"><i class="fa-solid fa-folder"></i>${mainCursor.value.folderName}</span>
+							<i class="fa-solid fa-delete-left" onclick="deleteNote(this)"></i>
 							</div>
-						</div>
-						`);
+							</div>
+							`);
+					}
 				};
 				mainCursor.continue();
 			}

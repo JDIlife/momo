@@ -222,6 +222,18 @@ main {
 	justify-content: center;
 }
 
+#rClickMenu {
+	background-color: var(--main-menuContent-color);
+	border-radius: 15px;
+	height: 26px;
+	width: 100px;
+	display: none;
+}
+
+#rClickMenu button {
+	font-size: 20px;
+}
+
 #listArea {
 	margin: 30px;
 	background-color:var(--main-area-color);
