@@ -222,17 +222,21 @@ main {
 	justify-content: center;
 }
 
-#rClickMenu {
+.ctxMenu {
 	background-color: var(--main-menuContent-color);
 	border-radius: 15px;
 	height: 26px;
-	width: 100px;
+	width: 70px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 	display: none;
 }
 
-#rClickMenu button {
+.ctxMenu button {
 	font-size: 20px;
 }
+
 
 #listArea {
 	margin: 30px;

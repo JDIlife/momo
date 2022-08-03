@@ -24,7 +24,7 @@ const autoDateTime = document.getElementById("autoDateTime");
 const newFolder = document.getElementById("newFolder");
 const folderItems = document.getElementById('folderItems');
 const folderItem = document.getElementsByClassName('folderItem');
-const ctxMenu = document.getElementById('ctxMenu');
+const ctxBtn = document.getElementById('ctxBtn');
 
 // listItems
 const listItems = document.getElementById('listItems');
@@ -57,8 +57,6 @@ dbReq.onupgradeneeded = function(event) {
 
 	let folderStore = db.createObjectStore("folders", {keyPath:"id", autoIncrement:true});
 	let noteStore = db.createObjectStore("notes", {keyPath:"id", autoIncrement:true});
-
-	folderStore.createIndex("folderName", "folderName", {unique:false});
 
 	noteStore.createIndex("folderName", "folderName", {unique: false});
 	noteStore.createIndex("title", "title", {unique: false});
@@ -155,10 +153,10 @@ let createFolder = () => {
 				value.onsuccess = (event) => {
 					console.log(event.target.result);
 					return(folderItems.innerHTML += `
-						<div oncontextmenu="contextMenu(event)" id=${value.result.id}>
+						<div oncontextmenu="contextMenu(event)">
 							<div class="folderItem" onclick="loadFolder(this)" id=${value.result.folderName}>
-								<i class="fa-solid fa-folder"></i>
-								<span class="folderName">${value.result.folderName}</span>
+							<i class="fa-solid fa-folder"></i>
+							<span class="folderName">${value.result.folderName}</span>
 							</div>
 						</div>
 					`);
@@ -176,7 +174,7 @@ let loadFolder = (event) => {
 	createNote();
 }
 
-// prevent default contextmenu
+// R-click menu
 
 let contextMenu = (event) => {
 	event.preventDefault();
@@ -184,19 +182,23 @@ let contextMenu = (event) => {
 	let x = event.pageX + 'px';
 	let y = event.pageY + 'px';
 
-	ctxMenu.style.display = "block";
+	let ctxMenu = document.getElementById('rClickMenu');
+
 	ctxMenu.style.left = x;
 	ctxMenu.style.top = y;
+	ctxMenu.style.display = 'block';
 
-	ctxMenu.setAttribute('id', event.currentTarget.id)
 }
-
 
 // remove contextMenu with click document area
 
 let removeCtxMenu = (event) => {
 
+	let ctxMenu = document.getElementById('rClickMenu');
+
 	ctxMenu.style.display = 'none';
+	ctxMenu.style.left = 'null';
+	ctxMenu.style.top = 'null';
 }
 
 document.addEventListener('click', removeCtxMenu, false);
@@ -208,24 +210,21 @@ let ctxConfirm = (event) => {
 
 	if(ctxConfirm == true){
 		console.log("yes delete")
-		let folderName = event.currentTarget.id;
-		deleteFolder(folderName);
+		// delete folder();
 	} else {
 		console.log("no")
 	}
 }
 
-ctxMenu.addEventListener('click', ctxConfirm)
+ctxBtn.addEventListener('click', ctxConfirm, false);
 
 // delete folder and notes
 
-let deleteFolder = (folderName) => {
+let deleteFolder = (event) => {
 	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		console.log(event.target.errorCode);
 	}
-
-	let folderId = folderName;
 
 	request.onsuccess = () => {
 		let db = request.result;
@@ -234,13 +233,9 @@ let deleteFolder = (folderName) => {
 		transaction.oncomplete = (event) => {console.log('success')};
 
 		let objStore = transaction.objectStore('folders');
-		let deleteFolderReq = objStore.delete(Number(folderName));
-		deleteFolderReq.onsuccess = (event) => {
-			console.log('deleteFolderReq');
-		}
+		let deleteFolderReq = objStore.delete();
 
 	}
-	createFolder();
 }
 
 //restore the folder when you refresh the page
