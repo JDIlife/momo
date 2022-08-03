@@ -28,6 +28,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 	background-color: var(--main-bg-color);
+	font-family: sans-serif;
 }
 
 #logo {
@@ -334,8 +335,8 @@ main {
 	width: 50px;
 	height: 50px;
 	position: fixed;
-	right: 5%;
-	bottom: 7%;
+	right: 3%;
+	bottom: 8%;
 }
 
 #submitBtn i {
