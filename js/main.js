@@ -282,7 +282,6 @@ let createNote = () => {
 
 		}
 	}
-	//resetForm();
 };
 
 // after user input, reset the text field
@@ -426,7 +425,7 @@ searchBtn.addEventListener('click', (e) => {
 	e.preventDefault();
 
 	if(searchInput.value != ""){
-		searchByTitle();
+		searchByTitle(searchByMain);
 	}
 })
 
@@ -434,15 +433,19 @@ searchBtn.addEventListener('click', (e) => {
 
 let searchByEnter = () => {
 	if(searchInput.value != "" && event.key === 'Enter'){
-		searchByTitle();
+		searchByTitle(searchByMain);
 	}
 }
 
-let searchByTitle = () => {
+// search by title
+
+let searchByTitle = (callback) => {
 	let request = window.indexedDB.open('MOMO', 2);
 	request.onerror = (event) => {
 		alert('Database Error', event.target.errorCode);
 	}
+
+	console.log("search by title start")
 	
 	let searchId = [];
 
@@ -489,8 +492,8 @@ let searchByTitle = () => {
 			}
 		}
 	}
-	return searchId;
-	searchByMain(searchId);
+	callback(searchId);
+	console.log('search by title end')
 }
 
 let searchByMain = (searchId) => {
@@ -498,7 +501,7 @@ let searchByMain = (searchId) => {
 	request.onerror = (event) => {
 		alert('Database Error', event.target.errorCode);
 	}
-	
+
 	console.log("main search", searchId);
 	request.onsuccess = (event) => {
 		let db = request.result;
@@ -521,7 +524,7 @@ let searchByMain = (searchId) => {
 				let mainValue = objStore.get(mainCursor.key);
 
 				mainValue.onsuccess = (event) => {
-					if(mainCursor.value.id in searchId){
+					if(searchId.includes(mainCursor.value.id)){
 						console.log("repeated note");
 					} else {
 						return (listItems.innerHTML += `
@@ -546,10 +549,7 @@ let searchByMain = (searchId) => {
 			}
 		}
 	}
-}
-
-let resetSearch = () => {
-	searchInput.value = "";
+	console.log("search by main end")
 }
 
 // dark mode change
