@@ -272,10 +272,6 @@ main {
 	padding-right: 10px;
 }
 
-.checkbox + label{
-	border-radius: 50px;
-}
-
 .hidden{
 	visibility: hidden;
 }
